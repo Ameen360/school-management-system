@@ -12,129 +12,12 @@
     <title>Student Dashboard</title>
     <link rel="shortcut icon" href="./images/logo.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="../css/oranbyte-google-translator.css">
+    <!-- <link rel="stylesheet" href="../css/oranbyte-google-translator.css"> -->
+    <link rel="stylesheet" href="custom-student.css">
 
-    <style type="text/css">
-        .container main .subjects .eg #piechart {
-            width: 600px;
-            height: 350px;
-            padding-right: 0%;
-            position: relative;
-            border-radius: 20px;
-        }
-
-        .container main .subjects .eg {
-            border-radius: 20px;
-        }
-
-        @media screen and (max-width: 700px) {
-            .container main .subjects .eg #piechart {
-                width: 250px;
-                height: 200px;
-                padding-left: 0%;
-                padding-right: 0%;
-
-            }
-
-            .container main .subjects {
-                margin-left: 4%;
-            }
-
-            .leaves {
-                width: 106%;
-                /*margin-left: 5%;*/
-                font-size: 10px;
-                padding-right: 0;
-            }
-
-        }
-
-        #myInput {
-            background-image: url('search.svg');
-            /* Add a search icon to input */
-            background-position: 5px 2px;
-            /* Position the search icon */
-            background-repeat: no-repeat;
-            /* Do not repeat the icon image */
-            width: 80%;
-            /* Full-width */
-            font-size: 16px;
-            /* Increase font-size */
-            padding: 12px 20px 12px 40px;
-            /* Add some padding */
-            border: 1px solid #ddd;
-            /* Add a grey border */
-            margin-bottom: 12px;
-            /* Add some space below the input */
-            border-radius: 40px;
-            position: relative;
-        }
-
-        #myTable {
-            width: 80%;
-            /* Full-width */
-            border: 1px solid #ddd;
-            /* Add a grey border */
-            font-size: 15px;
-            /* Increase font-size */
-            border-radius: 40px;
-            position: relative;
-        }
-
-        #myTable th {
-            background-color: #A9A9A9;
-            color: white;
-        }
-
-        #myTable th,
-        #myTable td {
-            text-align: center;
-            /* Left-align text */
-            padding: 12px;
-            /* Add padding */
-            border-radius: 16px;
-        }
-
-
-        #myTable tr {
-            /* Add a bottom border to all table rows */
-            border-bottom: 1px solid #ddd;
-            border-radius: 40px;
-            text-align: center;
-        }
-
-        #myTable tr.header,
-        #myTable tr:hover {
-            /* Add a grey background color to the table header and on hover */
-            background-color: #f1f1f1;
-        }
-
-        @media only screen and (max-width: 768px) {
-            #myTable {
-                width: 95%;
-                margin: 0%;
-                font-size: 12.5px;
-            }
-
-            #myInput {
-                width: 95%;
-                margin: 0%;
-            }
-        }
-
-        .link-btn {
-            display: block;
-            border: 1px solid rgb(214 183 255);
-            background-color: rgb(212 196 255 / 77%);
-            color: #000000;
-            padding: 8px 10px;
-            border-radius: 5px;
-            max-width: 100px;
-            text-align: center;
-        }
-    </style>
+   
 </head>
 
 <body>
@@ -211,11 +94,11 @@
                     </div>
                 </div>
                 <br>
-                <div id="oranbyte-google-translator" 
+                <!-- <div id="oranbyte-google-translator" 
                         data-default-lang="en"
                         data-lang-root-style="code-flag"
                         data-lang-list-style="code-flag"
-                        ></div>
+                        ></div> -->
                 <div class="about">
                     <?php
                     $query = "select * from students where id='$id'";
@@ -237,12 +120,12 @@
 
                     ?><br>
 
-                    <div style="display: inline;">
+                    <!-- <div style="display: inline;">
                   
                     <b><a href="buspanel.php" class="link-btn">Bus Panel</a></b><br>
                     <b><a href="fee-payment.php" class="link-btn">Pay-Fee</a></b>
                     
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </aside>
@@ -449,7 +332,7 @@
     <script type="text/javascript" src="app.js"></script>
     <!-- <script type="text/javascript" src="timeTable.js"></script> -->
     <script type="text/javascript" src="index.js"></script>
-    <script src="../js/oranbyte-google-translator.js"></script>
+    <!-- <script src="../js/oranbyte-google-translator.js"></script> -->
 </body>
 
 </html>

@@ -109,95 +109,69 @@
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <div class="row">
-                                <div class="col-6">
-                                    <label for="class" class="form-label">Class</label>
-                                    <select class="form-select" id="class" name="class" style="width:100%;" required>
+                        <div class="col-6">
+                            <label for="class" class="form-label">Class</label>
+                            <select class="form-select" id="class" name="class" style="width:100%;" required>
+                                <?php
+                                // Get current class safely
+                                $id = $_SESSION['uid'];
+                                $query = "SELECT class FROM teachers WHERE id = ?";
+                                $stmt = mysqli_prepare($conn, $query);
+                                mysqli_stmt_bind_param($stmt, "s", $id);
+                                mysqli_stmt_execute($stmt);
+                                $result = mysqli_stmt_get_result($stmt);
+                                $row = mysqli_fetch_assoc($result);
 
-                                        <!-- <option selected disabled value="">---select--</option>
-                                        <option value="12">12</option>
-                                        <option value="11">11</option>
-                                        <option value="10">10</option>
-                                        <option value="9">9</option>
-                                        <option value="8">8</option>
-                                        <option value="7">7</option>
-                                        <option value="6">6</option>
-                                        <option value="5">5</option>
-                                        <option value="4">4</option>
-                                        <option value="3">3</option>
-                                        <option value="2">2</option>
-                                        <option value="1">1</option>
-                                        <option value="pg">pg</option>
-                                        <option value="lkg">lkg</option>
-                                        <option value="ukg">ukg</option> -->
-                                        <?php
-                                            $id = $_SESSION['uid'];
-                                            $query = "SELECT * FROM teachers where id = '$id'";
-                                            $result = mysqli_query($conn,$query);
-                                            $row = mysqli_fetch_assoc($result);
-                                            if($row["class"]=="12s"){
-                                                echo '<option selected value="'.$row["class"].'">Class 12 Science</option>';
-                                            }
-                                            else if($row["class"]=="12c"){
-                                                echo '<option selected value="'.$row["class"].'">Class 12 Commerce</option>';
-                                            }
-                                           
-                                            else if($row["class"]=="11s"){
-                                                echo '<option selected value="'.$row["class"].'">Class 11 Scinece</option>';
-                                            }
-                                            else if($row["class"]=="11c"){
-                                                echo '<option selected value="'.$row["class"].'">Class 11 Commerce</option>';
-                                            }
-                                            
-                                            else{
-                                                echo '<option selected value="'.$row["class"].'">'.$row["class"].'</option>';
-                                            }
-                                         ?>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        required!
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <label for="section" class="form-label">Section</label>
-                                    <select class="form-select" id="section" name="section" style="width:100%;"
-                                        required>
-                                        <option selected disabled value="">--select--</option>
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                    </select>
-                                    <div class="invalid-feedback">
-                                        required!
-                                    </div>
-                                </div>
+                                // Set current value (fallback to 'null' if missing)
+                                $current_class = $row['class'] ?? 'null';
+
+                                // Now include the shared partial
+                                include 'partials/select_classes.php';
+                                ?>
+                            </select>
+                            <div class="invalid-feedback">
+                                required!
                             </div>
                         </div>
-
-                        <div class="mb-3" id="uploadImageField">
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Photo</label>
-                                <input class="form-control" type="file" id="uploadImage" name="image" placeholder="file"
-                                    accept=".png, .jpeg, .jpg">
-
+                        <div class="col-6">
+                            <label for="section" class="form-label">Section</label>
+                            <select class="form-select" id="section" name="section" style="width:100%;"
+                                required>
+                                <option selected disabled value="">--select--</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                required!
                             </div>
-
                         </div>
-
-
                     </div>
                 </div>
-                <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary" id="general-info-btn">
-                        <div><i class='bx bxs-chevrons-right'></i><span> next</span></div>
-                    </button>
+                <div class="mb-3" id="uploadImageField">
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Photo</label>
+                        <input class="form-control" type="file" id="uploadImage" name="image" placeholder="file"
+                            accept=".png, .jpeg, .jpg">
+
+                    </div>
+
                 </div>
-            </form>
+
 
         </div>
     </div>
+    <div class="modal-footer">
+
+        <button type="button" class="btn btn-primary" id="general-info-btn">
+            <div><i class='bx bxs-chevrons-right'></i><span> next</span></div>
+        </button>
+    </div>
+    </form>
+
+</div>
+</div>
 </div>
 
 <!-- personal information -->
@@ -248,18 +222,18 @@
                             <label for="exampleInputEmail1" class="form-label">City</label>
                             <div class="row">
                                 <div class="col">
-                                <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
-                                name="city" required>
-                            <div class="invalid-feedback">
-                                required!
-                            </div>
+                                    <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
+                                        name="city" required>
+                                    <div class="invalid-feedback">
+                                        required!
+                                    </div>
                                 </div>
                                 <div class="col">
-                                <input type="text" class="form-control" id="zip" aria-describedby="emailHelp"
-                                name="zip" placeholder="ZIP" required>
-                            <div class="invalid-feedback">
-                                required!
-                            </div>
+                                    <input type="text" class="form-control" id="zip" aria-describedby="emailHelp"
+                                        name="zip" placeholder="ZIP" required>
+                                    <div class="invalid-feedback">
+                                        required!
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -267,14 +241,9 @@
 
                         <div class="mb-3">
                             <label for="state" class="form-label">State</label>
-                            <select class="form-select" aria-label="Default select example" id="state" name="state"
-                                required>
+                            <select class="form-select" aria-label="Default select example" id="state" name="state" required>
                                 <option selected disabled value="">--select--</option>
-                                <option value="Hariyana">Hariyana</option>
-                                <option value="UP">UP</option>
-                                <option value="Delhi">Delhi</option>
-                                <option value="Panjab">Panjab</option>
-                                <option value="Gujrat">Gujrat</option>
+                                <?php include('partials/select_states.php'); ?>
                             </select>
                             <div class="invalid-feedback">
                                 required!
@@ -283,7 +252,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" onclick="backToStudentDetail()">
+                    <button type="button" class="btn btn-secondary" onclick="backToStudentDetail()">
                         <div><i class='bx bxs-chevrons-left'></i><span>Back</span></div>
                     </button>
                     <button type="button" class="btn btn-primary" id="personal-info-btn">
@@ -294,6 +263,8 @@
         </div>
     </div>
 </div>
+
+
 <!-- end of personal information-->
 
 <!-- Guardian information -->
@@ -478,17 +449,17 @@
                                 <div class="student-btns">
 
                                     <!-- <a class="add-btns"> <i class='bx bx-filter'></i></a> -->
-                                    
-                                    <div class="dropdown dropdown-center">
-                                    <a class="notif" data-bs-toggle="dropdown" aria-expanded="false" id="dropDownListForSubmit">
-                                        <i class='bx bx-filter'></i>
-                                    </a>
 
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item reset-attendence" id="add_student_dropdown" data-bs-toggle="modal" data-bs-target="#addTeacherModal">Add Student</a></li>
-                                        <li><a class="dropdown-item submit-attendence" id="remove_student_dropdown" data-bs-toggle="modal" data-bs-target="#removeStudentModel">Remove Student</a></li>
-                                    </ul>
-                                </div>
+                                    <div class="dropdown dropdown-center">
+                                        <a class="notif" data-bs-toggle="dropdown" aria-expanded="false" id="dropDownListForSubmit">
+                                            <i class='bx bx-filter'></i>
+                                        </a>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item reset-attendence" id="add_student_dropdown" data-bs-toggle="modal" data-bs-target="#addTeacherModal">Add Student</a></li>
+                                            <li><a class="dropdown-item submit-attendence" id="remove_student_dropdown" data-bs-toggle="modal" data-bs-target="#removeStudentModel">Remove Student</a></li>
+                                        </ul>
+                                    </div>
 
                                 </div>
                             </div>
@@ -601,7 +572,7 @@
 
                             <div class="container">
                                 <a class="find" onclick="findAndshowStudents()">
-                                <i class='bx bx-search-alt'></i>
+                                    <i class='bx bx-search-alt'></i>
                                     <span>Find</span>
                                 </a>
 
@@ -631,10 +602,10 @@
                                         </a> -->
 
                                         <div class="_flex-container">
-                                        <input class="form-control me-2" type="search" placeholder="Search" style="max-width: 225px;height: 40px;" id="search-teacher-name"
-                                            aria-label="Search">
-                                        <button class="btn btn-success" type="button" id="searchTeacherByNameBtn" disabled><i class='bx bx-search-alt'></i></button>
-                                    </div>
+                                            <input class="form-control me-2" type="search" placeholder="Search" style="max-width: 225px;height: 40px;" id="search-teacher-name"
+                                                aria-label="Search">
+                                            <button class="btn btn-success" type="button" id="searchTeacherByNameBtn" disabled><i class='bx bx-search-alt'></i></button>
+                                        </div>
 
                                     </div>
                                     <hr class="text-danger">
@@ -643,9 +614,9 @@
 
 
 
-                                     
+
                                     </div>
-                                 
+
 
                                     <!--table-->
                                     <div class="students-table">

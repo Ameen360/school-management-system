@@ -75,14 +75,14 @@
 
 
                         <div class="mb-3">
-                        <label for="details" class="form-label">Class Teacher Details</label>
-                        <div class="row">
+                            <label for="details" class="form-label">Class Teacher Details</label>
+                            <div class="row">
                                 <div class="col">
-                                <select class="form-select" id="class" name="class" style="width:100%;" required>
+                                    <select class="form-select" id="class" name="class" style="width:100%;" required>
 
-                                    <option selected disabled value="">---select--</option>
-                                    <option value="null">Not Applicable</option>
-                                    <!-- <option value="12s">12 (Math)</option>
+                                        <option selected disabled value="">---select--</option>
+                                        <option value="null">Not Applicable</option>
+                                        <!-- <option value="12s">12 (Math)</option>
                                     <option value="12s">12 (Bio)</option>
                                     <option value="12c">12 (Commerce)</option>
                                     <option value="11s">11 (Math)</option>
@@ -101,14 +101,14 @@
                                     <option value="pg">pg</option>
                                     <option value="lkg">lkg</option>
                                     <option value="ukg">ukg</option> -->
-                                    <?php include('partials/select_classes.php') ?>
+                                        <?php include('partials/select_classes.php') ?>
                                     </select>
                                     <div class="invalid-feedback">
-                                    required!
+                                        required!
                                     </div>
                                 </div>
                                 <div class="col">
-                                <select class="form-select" id="section" name="section" style="width:100%;"
+                                    <select class="form-select" id="section" name="section" style="width:100%;"
                                         required>
                                         <option selected disabled value="">--select--</option>
                                         <!-- <option value="A">A</option>
@@ -123,8 +123,8 @@
                                 </div>
                             </div>
                             <div class="invalid-feedback" id="invaldClassteacher">
-                                        Either both are not applicable or both are selected!!
-                                    </div>
+                                Either both are not applicable or both are selected!!
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -240,14 +240,9 @@
 
                         <div class="mb-3">
                             <label for="state" class="form-label">State</label>
-                            <select class="form-select" aria-label="Default select example" id="state" name="state"
-                                required>
+                            <select class="form-select" aria-label="Default select example" id="state" name="state" required>
                                 <option selected disabled value="">--select--</option>
-                                <option value="Hariyana">Hariyana</option>
-                                <option value="UP">UP</option>
-                                <option value="Delhi">Delhi</option>
-                                <option value="Panjab">Panjab</option>
-                                <option value="Gujrat">Gujrat</option>
+                                <?php include('partials/select_states.php'); ?>
                             </select>
                             <div class="invalid-feedback">
                                 required!
@@ -256,7 +251,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" onclick="backToStudentDetail()" class="btn btn-secondary">
+                    <button type="button" onclick="backToStudentDetail()" class="btn btn-secondary">
                         <div><i class='bx bxs-chevrons-left'></i><span>Back</span></div>
                     </button>
                     <button type="button" class="btn btn-primary" id="personal-info-btn">
@@ -344,7 +339,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" class="btn btn-secondary" onclick="backToAddressDetail()">
+                    <button type="button" class="btn btn-secondary" onclick="backToAddressDetail()">
                         <div><i class='bx bxs-chevrons-left'></i><span>Back</span></div>
                     </button>
                     <button type="button" class="btn btn-primary" id="guardian-form-btn"><span>Submit </span></button>
@@ -432,12 +427,11 @@
                             onclick="showTeachers()">Show
                             Teachers</button>
                     </li>
-                    
-                    
+
+
                     <li class="nav-item me-1" role="presentation">
                         <button class="nav-link" id="show-leave-tab" data-bs-toggle="tab" data-bs-target="#leave-tab"
-                            type="button" role="tab" aria-controls="leave-tab" aria-selected="false"
-                          >Teachers Leave</button>
+                            type="button" role="tab" aria-controls="leave-tab" aria-selected="false">Teachers Leave</button>
                     </li>
 
                 </ul>
@@ -522,7 +516,7 @@
                     <br>
                     <div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
                         <div class="showAttendence">
-                           
+
                             <!-- Attendence on Specific date  -->
                             <div class="container">
                                 <br>
@@ -543,10 +537,10 @@
                                         </a> -->
 
                                         <div class="_flex-container">
-                                        <input class="form-control me-2" type="search" placeholder="Search" style="max-width: 225px;height: 40px;" id="search-teacher-name"
-                                            aria-label="Search">
-                                        <button class="btn btn-success" type="button" id="searchTeacherByNameBtn" disabled><i class='bx bx-search-alt'></i></button>
-                                    </div>
+                                            <input class="form-control me-2" type="search" placeholder="Search" style="max-width: 225px;height: 40px;" id="search-teacher-name"
+                                                aria-label="Search">
+                                            <button class="btn btn-success" type="button" id="searchTeacherByNameBtn" disabled><i class='bx bx-search-alt'></i></button>
+                                        </div>
 
                                     </div>
                                     <hr class="text-danger">
@@ -602,8 +596,8 @@
                     </div>
 
                     <div class="tab-pane" id="leave-tab" role="tabpanel" aria-labelledby="leave-tab" tabindex="0">
-                       <?php include('partials/teacher-shared/teachers-leave-tab.php') ?>
-                   </div>
+                        <?php include('partials/teacher-shared/teachers-leave-tab.php') ?>
+                    </div>
 
 
                 </div>

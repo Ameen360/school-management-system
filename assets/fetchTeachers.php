@@ -58,7 +58,7 @@ if (isset($_POST['name'])) {
                 <td>" . $tid . "</td>
                 <td class='user'>
                     <img src='" . $image . "'>
-                    <p>". ucfirst(strtolower($fname)) ." ". strtolower($lname)."</p>
+                    <p>". ucwords(strtolower($fname . " " . $lname)) ."</p>
                 </td>
                 <td class='flex-center'>
                     <div class='edit-delete'>

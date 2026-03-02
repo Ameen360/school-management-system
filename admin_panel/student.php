@@ -17,7 +17,7 @@
         </div>
     </div>
 </div>
-<!-- end of onfirm edit alert modal-->
+<!-- end of confirm edit alert modal-->
 
 <!-- alert to delete teacher  -->
 <div class="modal fade" id="delete-confirmation-modal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -116,21 +116,7 @@
                                     <select class="form-select" id="class" name="class" style="width:100%;" required>
 
                                         <option selected disabled value="">---select--</option>
-                                        <!-- <option value="12">12</option>
-                                        <option value="11">11</option>
-                                        <option value="10">10</option>
-                                        <option value="9">9</option>
-                                        <option value="8">8</option>
-                                        <option value="7">7</option>
-                                        <option value="6">6</option>
-                                        <option value="5">5</option>
-                                        <option value="4">4</option>
-                                        <option value="3">3</option>
-                                        <option value="2">2</option>
-                                        <option value="1">1</option>
-                                        <option value="pg">pg</option>
-                                        <option value="lkg">lkg</option>
-                                        <option value="ukg">ukg</option> -->
+                                        
                                         <?php include('partials/select_classes.php') ?>
                                     </select>
                                     <div class="invalid-feedback">
@@ -200,7 +186,7 @@
                             <div class="valid-feedback">
                             </div>
                             <div class="invalid-feedback" id="phone-mdg">
-                                Please enter a valid 10-digit phone number.
+                                Please enter a valid 11-digit phone number.
                             </div>
                         </div>
 
@@ -227,18 +213,18 @@
                             <label for="exampleInputEmail1" class="form-label">City</label>
                             <div class="row">
                                 <div class="col">
-                                <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
-                                name="city" required>
-                            <div class="invalid-feedback">
-                                required!
-                            </div>
+                                    <input type="text" class="form-control" id="city" aria-describedby="emailHelp"
+                                        name="city" required>
+                                    <div class="invalid-feedback">
+                                        required!
+                                    </div>
                                 </div>
                                 <div class="col">
-                                <input type="text" class="form-control" id="zip" aria-describedby="emailHelp"
-                                name="zip" placeholder="ZIP" required>
-                            <div class="invalid-feedback">
-                                required!
-                            </div>
+                                    <input type="text" class="form-control" id="zip" aria-describedby="emailHelp"
+                                        name="zip" placeholder="ZIP" required>
+                                    <div class="invalid-feedback">
+                                        required!
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -246,14 +232,9 @@
 
                         <div class="mb-3">
                             <label for="state" class="form-label">State</label>
-                            <select class="form-select" aria-label="Default select example" id="state" name="state"
-                                required>
+                            <select class="form-select" aria-label="Default select example" id="state" name="state" required>
                                 <option selected disabled value="">--select--</option>
-                                <option value="Hariyana">Hariyana</option>
-                                <option value="UP">UP</option>
-                                <option value="Delhi">Delhi</option>
-                                <option value="Panjab">Panjab</option>
-                                <option value="Gujrat">Gujrat</option>
+                                <?php include('partials/select_states.php'); ?>
                             </select>
                             <div class="invalid-feedback">
                                 required!
@@ -262,7 +243,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                   <button type="button" onclick="backToStudentDetail()" class="btn btn-secondary">
+                    <button type="button" onclick="backToStudentDetail()" class="btn btn-secondary">
                         <div><i class='bx bxs-chevrons-left'></i><span>Back</span></div>
                     </button>
                     <button type="button" class="btn btn-primary" id="personal-info-btn">
@@ -305,7 +286,7 @@
                             <div class="valid-feedback">
                             </div>
                             <div class="invalid-feedback" id="phone-g">
-                                Please enter a valid 10-digit phone number.
+                                Please enter a valid 11-digit phone number.
                             </div>
                         </div>
 
@@ -432,7 +413,7 @@
             <div class="orders">
 
                 <!-- Nav tabs -->
-                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item me-1" role="presentation">
                         <button class="nav-link active " id="addStudentTab" data-bs-toggle="tab" data-bs-target="#home" onclick="AddStudentBtnClick()" type="button" role="tab" aria-controls="home" aria-selected="true">Add Students</button>
                     </li>
@@ -460,17 +441,17 @@
                                 <div class="student-btns">
 
                                     <!-- <a class="add-btns"> <i class='bx bx-filter'></i></a> -->
-                                    
-                                    <div class="dropdown dropdown-center">
-                                    <a class="notif" data-bs-toggle="dropdown" aria-expanded="false" id="dropDownListForSubmit">
-                                        <i class='bx bx-filter'></i>
-                                    </a>
 
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item reset-attendence" id="add_student_dropdown" data-bs-toggle="modal" data-bs-target="#addTeacherModal">Add Student</a></li>
-                                        <li><a class="dropdown-item submit-attendence" id="remove_student_dropdown" data-bs-toggle="modal" data-bs-target="#removeStudentModel">Remove Student</a></li>
-                                    </ul>
-                                </div>
+                                    <div class="dropdown dropdown-center">
+                                        <a class="notif" data-bs-toggle="dropdown" aria-expanded="false" id="dropDownListForSubmit">
+                                            <i class='bx bx-filter'></i>
+                                        </a>
+
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item reset-attendence" id="add_student_dropdown" data-bs-toggle="modal" data-bs-target="#addTeacherModal">Add Student</a></li>
+                                            <li><a class="dropdown-item submit-attendence" id="remove_student_dropdown" data-bs-toggle="modal" data-bs-target="#removeStudentModel">Remove Student</a></li>
+                                        </ul>
+                                    </div>
 
                                 </div>
                             </div>
@@ -583,8 +564,8 @@
                             <br>
 
                             <div class="container">
-                                 <a class="find" onclick="findAndshowStudents()">
-                                <i class='bx bx-search-alt'></i>
+                                <a class="find" onclick="findAndshowStudents()">
+                                    <i class='bx bx-search-alt'></i>
                                     <span>Find</span>
                                 </a>
 
@@ -614,10 +595,10 @@
                                         </a> -->
 
                                         <div class="_flex-container">
-                                        <input class="form-control me-2" type="search" placeholder="Search" style="max-width: 225px;height: 40px;" id="search-teacher-name"
-                                            aria-label="Search">
-                                        <button class="btn btn-success" type="button" id="searchTeacherByNameBtn" disabled><i class='bx bx-search-alt'></i></button>
-                                    </div>
+                                            <input class="form-control me-2" type="search" placeholder="Search" style="max-width: 225px;height: 40px;" id="search-teacher-name"
+                                                aria-label="Search">
+                                            <button class="btn btn-success" type="button" id="searchTeacherByNameBtn" disabled><i class='bx bx-search-alt'></i></button>
+                                        </div>
 
                                     </div>
                                     <hr class="text-danger">
@@ -626,9 +607,9 @@
 
 
 
-                                     
+
                                     </div>
-                                 
+
 
                                     <!--table-->
                                     <div class="students-table">

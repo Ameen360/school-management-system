@@ -3,7 +3,7 @@
    
     $user = "root";
     $password = "";
-    $db = "_sms";
+    $db = "erp_sms";
     
     $conn = mysqli_connect($server, $user, $password, $db);
 
