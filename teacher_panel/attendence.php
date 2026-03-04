@@ -4,7 +4,7 @@
 
 <!-- Sidebar -->
 <?php include('partials/_sidebar.php') ?>
-<input type="hidden" value="3" id="checkFileName">
+<input type="hidden" value="5" id="checkFileName">
 <!-- End of Sidebar -->
 
 <!-- Main Content -->
@@ -39,8 +39,9 @@
                             Attendence</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link showAttendenceBtn" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
-                            type="button" role="tab" aria-controls="profile" aria-selected="false">Show
+                        <button class="nav-link showAttendenceBtn" id="profile-tab" data-bs-toggle="tab"
+                            data-bs-target="#profile" type="button" role="tab" aria-controls="profile"
+                            aria-selected="false">Date Wise
                             Attendence</button>
                     </li>
 
@@ -48,15 +49,16 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane attendenceTableContainer active" id="home" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                    <div class="tab-pane attendenceTableContainer active" id="home" role="tabpanel"
+                        aria-labelledby="home-tab" tabindex="0">
                         <br>
                         <!-- Take attendence -->
                         <div class="attendenceTable" style="display: block;">
                             <div class="header">
                                 <i class='bx bx-receipt'></i>
-                                <h3>Take Attendence </h3>
+                                <h3>Show Attendence </h3>
                                 <i class='bx bx-filter'></i>
-                              
+
                             </div>
 
 
@@ -86,9 +88,7 @@
                                             <option>pg</option>
                                             <option>lkg</option>
                                             <option>ukg</option> -->
-                                             <?php include('partials/select_classes.php') ?>
-
-
+                                            <?php include('partials/select_classes.php') ?>
                                         </select>
                                     </div>
                                 </div>
@@ -105,6 +105,7 @@
                                         <select class="form-select" aria-label="Default select example" name="section"
                                             id="sectionTakeAttendence">
                                             <!-- <option selected>A</option>
+
                                             <option>B</option>
                                             <option>C</option> -->
                                             <?php include('partials/selelct_section.php') ?>
@@ -116,7 +117,7 @@
 
                             <div class="container">
                                 <a class="find" id="findForAttendence">
-                                    <i class='bx bx-search'></i>
+                                    <i class='bx bx-search-alt'></i>
                                     <span>Find</span>
                                 </a>
 
@@ -138,7 +139,7 @@
 
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item reset-attendence">Reset Attendence</a></li>
-                                        <li><a class="dropdown-item submit-attendence" id="submit_attendence_dropdown" >Submit Attendence</a></li>
+                                        <li><a class="dropdown-item submit-attendence" id="submit_attendence_dropdown">Submit Attendence</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -155,22 +156,25 @@
                                         <th>&nbsp;&nbsp;Name</th>
                                         <th>Total Days</th>
                                         <th>Present</th>
-                                        <th>Attendence</th>
+                                        <th>Percentage</th>
+                                        <th>Mark Today's Attendance</th> <!-- ← NEW COLUMN -->
                                     </tr>
                                 </thead>
                                 <tbody id="takeAttendenceTable">
-                                  
+
+
+
                                 </tbody>
                             </table>
                             <!--END table-->
 
                             <div id="dataNotAvailable">
 
-                                <div class="_flex-container box-hide" >
+                                <div class="_flex-container box-hide">
 
                                     <div class="no-data-box">
                                         <div class="no-dataicon" id="no-data-icon">
-                                           
+
                                         </div>
                                         <p id="no-data-msg"></p>
                                     </div>
@@ -180,12 +184,13 @@
                         </div>
                         <hr>
 
-                       <div id="buttons">
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="bottom-btns">
-                            <button type="button" class="btn btn-outline-warning" id="reset-attendence-btn">&nbsp;&nbsp;Reset&nbsp;&nbsp;</button>
-                            <button type="button" class="btn btn-outline-success" id="submit-attendence-btn">Submit</button>
+                        <div id="buttons">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="bottom-btns">
+                                <button type="button" class="btn btn-outline-warning" id="reset-attendence-btn">&nbsp;&nbsp;Reset&nbsp;&nbsp;</button>
+                                <button type="button" class="btn btn-outline-success" id="submit-attendence-btn">Submit</button>
+                            </div>
                         </div>
-                    </div>
+
 
                         <!-- end of Take attendence -->
                     </div>
@@ -198,8 +203,8 @@
 
                                 <div class="limit">
                                     <div class="row g-3 align-items-center">
-                                        
-                                       
+
+
                                     </div>
                                 </div>
 
@@ -214,9 +219,10 @@
                                         <label for="inputPassword6" class="col-form-label">&nbsp;Class&nbsp; </label>
                                     </div>
                                     <div class="col-auto">
-                                        <select class="form-select" aria-label="Default select example" id="showAttendenceClass">
-                                        <!-- <option selected>12</option> -->
-                                            <!-- <option>11</option>
+                                        <select class="form-select" aria-label="Default select example"
+                                            id="showAttendenceClass">
+                                            <!-- <option selected>12</option>
+                                            <option>11</option>
                                             <option>10</option>
                                             <option>9</option>
                                             <option>8</option>
@@ -231,7 +237,6 @@
                                             <option>lkg</option>
                                             <option>ukg</option> -->
                                             <?php include('partials/select_classes.php') ?>
-
                                         </select>
                                     </div>
                                 </div>
@@ -245,8 +250,9 @@
                                         <label for="inputPassword6" class="col-form-label">Section </label>
                                     </div>
                                     <div class="col-auto">
-                                        <select class="form-select" aria-label="Default select example"  id="showAttendenceSection">
-                                        <!-- <option selected>A</option>
+                                        <select class="form-select" aria-label="Default select example"
+                                            id="showAttendenceSection">
+                                            <!-- <option selected>A</option>
                                             <option>B</option>
                                             <option>C</option> -->
                                             <?php include('partials/selelct_section.php') ?>
@@ -259,15 +265,17 @@
                             <div class="container" style="display: flex;">
                                 <div class="row g-3 align-items-center">
                                     <div class="col-auto">
-                                        <label for="inputPassword6" class="col-form-label">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
+                                        <label for="inputPassword6"
+                                            class="col-form-label">Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </label>
                                     </div>
                                     <div class="col-auto">
-                                    <input type="date" class="form-control" style="width: 400px;" id="dateInput" aria-describedby="emailHelp">
+                                        <input type="date" class="form-control" style="width: 400px;" id="dateInput"
+                                            aria-describedby="emailHelp" data-date-format="DD MMMM YYYY">
 
-                                    <div class="invalid-feedback invalid-date" id="edit-invalid-file">
-                                                        Please choose date here!
-                                                </div>
-                                            
+                                        <div class="invalid-feedback invalid-date" id="edit-invalid-file">
+                                            Please choose date here!
+                                        </div>
+
 
                                     </div>
                                 </div>
@@ -275,13 +283,13 @@
 
                             <br>
 
-                          <div class="container">
-                          <a class="find" id="find-attendence-btn">
-                                <i class='bx bx-search'></i>
-                                <span>Find</span>
-                            </a>
+                            <div class="container">
+                                <a class="find" id="find-attendence-btn">
+                                    <i class='bx bx-search-alt'></i>
+                                    <span>Find</span>
+                                </a>
 
-                          </div>
+                            </div>
                             <hr>
                             <!-- Attendence on Specific date  -->
                             <div class="container">
@@ -315,8 +323,8 @@
                                             </tr>
                                         </thead>
                                         <tbody id="showAttendenceTableBody">
-                                            
-                                    </tbody>
+
+                                        </tbody>
                                     </table>
                                     <div id="boxForNoData">
 
@@ -328,7 +336,8 @@
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" class="btn btn-secondary" id="prevBtn">prev</button>
-                                        <a class="btn btn-secondary disabled" role="button" aria-disabled="true" id="pageCount">1</a>
+                                        <a class="btn btn-secondary disabled" role="button" aria-disabled="true"
+                                            id="pageCount">1</a>
                                         <button type="button" class="btn btn-secondary" id="nextBtn">next</button>
                                     </div>
                                 </div>
@@ -352,5 +361,7 @@
 
 </div>
 
-<script src="../assets/js/attendence.js"></script>
+<script src="../assets/js/attendenceShowToAdmin.js"></script>
+<!-- <script src="../assets/js/attendence.js"></script> -->
+
 <?php include('partials/_footer.php'); ?>

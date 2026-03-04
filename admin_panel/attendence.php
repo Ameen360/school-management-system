@@ -58,7 +58,7 @@
                                 <i class='bx bx-receipt'></i>
                                 <h3>Show Attendence </h3>
                                 <i class='bx bx-filter'></i>
-                            
+
                             </div>
 
 
@@ -117,7 +117,7 @@
 
                             <div class="container">
                                 <a class="find" id="findForAttendence">
-                                <i class='bx bx-search-alt'></i>
+                                    <i class='bx bx-search-alt'></i>
                                     <span>Find</span>
                                 </a>
 
@@ -139,7 +139,7 @@
 
                                     <ul class="dropdown-menu">
                                         <li><a class="dropdown-item reset-attendence">Reset Attendence</a></li>
-                                        <li><a class="dropdown-item submit-attendence" id="submit_attendence_dropdown" >Submit Attendence</a></li>
+                                        <li><a class="dropdown-item submit-attendence" id="submit_attendence_dropdown">Submit Attendence</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -157,11 +157,12 @@
                                         <th>Total Days</th>
                                         <th>Present</th>
                                         <th>Percentage</th>
+                                        <th>Mark Today's Attendance</th> <!-- ← NEW COLUMN -->
                                     </tr>
                                 </thead>
                                 <tbody id="takeAttendenceTable">
 
-                                   
+
 
                                 </tbody>
                             </table>
@@ -184,11 +185,11 @@
                         <hr>
 
                         <div id="buttons">
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="bottom-btns">
-                            <button type="button" class="btn btn-outline-warning" id="reset-attendence-btn">&nbsp;&nbsp;Reset&nbsp;&nbsp;</button>
-                            <button type="button" class="btn btn-outline-success" id="submit-attendence-btn">Submit</button>
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end" id="bottom-btns">
+                                <button type="button" class="btn btn-outline-warning" id="reset-attendence-btn">&nbsp;&nbsp;Reset&nbsp;&nbsp;</button>
+                                <button type="button" class="btn btn-outline-success" id="submit-attendence-btn">Submit</button>
+                            </div>
                         </div>
-                    </div>
 
 
                         <!-- end of Take attendence -->
@@ -284,7 +285,7 @@
 
                             <div class="container">
                                 <a class="find" id="find-attendence-btn">
-                                <i class='bx bx-search-alt'></i>
+                                    <i class='bx bx-search-alt'></i>
                                     <span>Find</span>
                                 </a>
 

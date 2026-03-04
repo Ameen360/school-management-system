@@ -1640,7 +1640,6 @@ div._flex-container button {
 .content main .bottom-data .orders table tr td .status.complain {
     background: var(--warning);
 }
-
 /*attendence btn*/
 .content main .bottom-data .orders table tr td .switch {
     position: relative;

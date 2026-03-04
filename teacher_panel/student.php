@@ -38,142 +38,110 @@
 </div>
 <!-- end of alert to delete teacher -->
 <!--add new student model -->
-
-
-<div class="modal" style="z-index: 2000;" id="addTeacherModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" style="z-index: 2000;" id="addTeacherModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
+
+            <!-- Header -->
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Student Details</h1>
-                <button type="button" class="close mr-2" data-bs-dismiss="modal" aria-label="Close"><i
-                        class='bx bx-x'></i></button>
+                <button type="button" class="close mr-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class='bx bx-x'></i>
+                </button>
             </div>
+
+            <!-- Form -->
             <form class="needs-validation" id="general-form" novalidate>
                 <div class="modal-body">
                     <div class="container my-3">
+                        <!-- All your fields stay exactly the same -->
                         <div class="mb-3">
                             <label for="fullname" class="form-label">Full Name</label>
                             <div class="row">
                                 <div class="col">
-                                    <input type="text" class="form-control" placeholder="First name"
-                                        aria-label="First name" id="fname" name="fname" required>
-                                    <div class="invalid-feedback">
-                                        required!
-                                    </div>
+                                    <input type="text" class="form-control" placeholder="First name" id="fname" name="fname" required>
+                                    <div class="invalid-feedback">required!</div>
                                 </div>
                                 <div class="col">
-                                    <input type="text" class="form-control" placeholder="Last name"
-                                        aria-label="Last name" id="lname" name="lname" required>
-                                    <div class="invalid-feedback">
-                                        required!
-                                    </div>
+                                    <input type="text" class="form-control" placeholder="Last name" id="lname" name="lname" required>
+                                    <div class="invalid-feedback">required!</div>
                                 </div>
                             </div>
                         </div>
-
-
 
                         <div class="mb-3">
                             <label for="father" class="form-label">Father name</label>
-                            <input type="text" class="form-control" id="father" aria-describedby="emailHelp"
-                                name="father" required>
-                            <div class="invalid-feedback">
-                                required!
-                            </div>
+                            <input type="text" class="form-control" id="father" name="father" required>
+                            <div class="invalid-feedback">required!</div>
                         </div>
 
                         <div class="mb-3">
-                            <div class="row">
+                            <div class="row g-3">
                                 <div class="col-6">
                                     <label for="dob" class="form-label">Date of Birth</label>
-                                    <input type="date" class="form-control" id="dob" aria-describedby="emailHelp"
-                                        name="dob" required>
-                                    <div class="invalid-feedback">
-                                        required!
-                                    </div>
+                                    <input type="date" class="form-control" id="dob" name="dob" required>
+                                    <div class="invalid-feedback">required!</div>
                                 </div>
-                                <div class="col-6 student-image">
-
+                                <div class="row g-3">
                                     <label for="gender" class="form-label">Gender</label>
-                                    <select class="form-select" id="gender" name="gender" style="width:100%;" required>
+                                    <select class="form-select" id="gender" name="gender" required>
                                         <option selected disabled value="">--select--</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="Other">Other</option>
                                     </select>
-                                    <div class="invalid-feedback">
-                                        required!
-                                    </div>
+                                    <div class="invalid-feedback">required!</div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-6">
-                            <label for="class" class="form-label">Class</label>
-                            <select class="form-select" id="class" name="class" style="width:100%;" required>
-                                <?php
-                                // Get current class safely
-                                $id = $_SESSION['uid'];
-                                $query = "SELECT class FROM teachers WHERE id = ?";
-                                $stmt = mysqli_prepare($conn, $query);
-                                mysqli_stmt_bind_param($stmt, "s", $id);
-                                mysqli_stmt_execute($stmt);
-                                $result = mysqli_stmt_get_result($stmt);
-                                $row = mysqli_fetch_assoc($result);
-
-                                // Set current value (fallback to 'null' if missing)
-                                $current_class = $row['class'] ?? 'null';
-
-                                // Now include the shared partial
-                                include 'partials/select_classes.php';
-                                ?>
-                            </select>
-                            <div class="invalid-feedback">
-                                required!
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <label for="class" class="form-label">Class</label>
+                                <select class="form-select" id="class" name="class" required>
+                                    <?php
+                                    $id = $_SESSION['uid'];
+                                    $query = "SELECT class FROM teachers WHERE id = ?";
+                                    $stmt = mysqli_prepare($conn, $query);
+                                    mysqli_stmt_bind_param($stmt, "s", $id);
+                                    mysqli_stmt_execute($stmt);
+                                    $result = mysqli_stmt_get_result($stmt);
+                                    $row = mysqli_fetch_assoc($result);
+                                    $current_class = $row['class'] ?? 'null';
+                                    include 'partials/select_classes.php';
+                                    ?>
+                                </select>
+                                <div class="invalid-feedback">required!</div>
+                            </div>
+                            <div class="row g-3">
+                                <label for="section" class="form-label">Section</label>
+                                <select class="form-select" id="section" name="section" required>
+                                    <option selected disabled value="">--select--</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                </select>
+                                <div class="invalid-feedback">required!</div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <label for="section" class="form-label">Section</label>
-                            <select class="form-select" id="section" name="section" style="width:100%;"
-                                required>
-                                <option selected disabled value="">--select--</option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
-                            </select>
-                            <div class="invalid-feedback">
-                                required!
-                            </div>
+
+                        <div class="mb-3 mt-3" id="uploadImageField">
+                            <label for="image" class="form-label">Photo</label>
+                            <input class="form-control" type="file" id="uploadImage" name="image" accept=".png,.jpeg,.jpg">
                         </div>
                     </div>
                 </div>
 
-                <div class="mb-3" id="uploadImageField">
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Photo</label>
-                        <input class="form-control" type="file" id="uploadImage" name="image" placeholder="file"
-                            accept=".png, .jpeg, .jpg">
-
-                    </div>
-
+                <!-- Footer - Now correctly inside modal-content -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="general-info-btn">
+                        <div><i class='bx bxs-chevrons-right'></i><span> next</span></div>
+                    </button>
                 </div>
-
-
+            </form>
         </div>
     </div>
-    <div class="modal-footer">
-
-        <button type="button" class="btn btn-primary" id="general-info-btn">
-            <div><i class='bx bxs-chevrons-right'></i><span> next</span></div>
-        </button>
-    </div>
-    </form>
-
 </div>
-</div>
-</div>
-
 <!-- personal information -->
 <div class="modal" style="z-index: 2000;" id="personalInformationModal" tabindex="-1"
     aria-labelledby="exampleModalLabel" aria-hidden="true">

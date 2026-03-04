@@ -32,68 +32,55 @@ function showStudentsForAttendence() {
   })
     .then(response => response.json())
     .then(data => {
-      if(data[2]==="SWITCH"){
-         document.getElementById("buttons").style.display="block";
+      const tableBody = document.getElementById("takeAttendenceTable");
+      tableBody.innerHTML = "";
+
+      if (data.status === "no_data") {
+        document.querySelector("#dropDownListForSubmit").disabled = true;
+        document.getElementById("no-data-icon").innerHTML = "<i class='bx bx-data'></i>";
+        document.getElementById("no-data-msg").innerHTML = data.message || "No students found";
+        document.getElementById("dataNotAvailable").style.display = 'block';
+        return;
       }
-      else if(data[2]==="PERCENTAGE"){
-          document.getElementById("buttons").style.display="none";
-  
-      }
-      else{
 
-      }
-     
-      if (data[0] === "READY_TO_TAKE") {
-        if (data[1] === "No Data") {
-          document.querySelector("#dropDownListForSubmit").disabled = true;
+      if (data.status === "success") {
+        document.getElementById("dataNotAvailable").style.display = 'none';
+        tableBody.innerHTML = data.html;
 
-          document.getElementById("takeAttendenceTable").innerHTML = "";
-          document.getElementById("no-data-icon").innerHTML = " <i class='bx bx-data'></i>";
-          document.getElementById("no-data-msg").innerHTML = data[1];
-          document.getElementById("dataNotAvailable").style.display = 'block';
-        } else {
-          document.querySelector("#dropDownListForSubmit").disabled = false;
+        // Show banner if already taken
+        if (data.already_taken) {
+          const banner = document.createElement('div');
+          banner.style.cssText = 'background:#fff3cd; color:#856404; padding:12px; border-radius:8px; margin:15px 0; text-align:center; font-weight:500;';
+          banner.innerHTML = '<strong>Attendance already taken today</strong><br>You can view the record but cannot change it.';
+          tableBody.parentNode.insertBefore(banner, tableBody);
+        }
 
-          document.getElementById("dataNotAvailable").style.display = 'none';
-          document.getElementById("takeAttendenceTable").innerHTML = data[1] + "";
+        // Enable/disable submit dropdown based on whether it's the teacher's class
+        document.querySelector("#dropDownListForSubmit").disabled = !data.is_teacher_class || data.already_taken;
 
-          var div = document.getElementById("bottom-btns");
-          var buttons = div.getElementsByTagName('button');
-          for (var i = 0; i < buttons.length; i++) {
-            buttons[i].disabled = false;
-          }
+        // Enable bottom buttons
+        var btns = document.getElementById("bottom-btns").getElementsByTagName('button');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].disabled = false;
         }
       } else {
-        
-        document.querySelector("#dropDownListForSubmit").disabled = true;
-        document.getElementById("takeAttendenceTable").innerHTML = "";
-        document.getElementById("no-data-icon").innerHTML = "<i class='bx bxs-error-alt' ></i>";
-        document.getElementById("no-data-msg").innerHTML = data[1] + "";
+        document.getElementById("no-data-icon").innerHTML = "<i class='bx bxs-error-alt'></i>";
+        document.getElementById("no-data-msg").innerHTML = data.message || "Something went wrong";
         document.getElementById("dataNotAvailable").style.display = 'block';
-
       }
-
-
     })
-    .catch(error => {
-      console.error('Error:', error);
-    });
 }
 
 document.querySelector(".submit-attendence").addEventListener("click", submitAttendence);
 document.getElementById('submit-attendence-btn').addEventListener("click", submitAttendence);
 
+// Update the submitAttendence function to work with the new structure
 function submitAttendence() {
-
-
   var div = document.querySelector(".attendenceTableContainer");
   disbableButtons(div, true);
 
-
   var dataRows = document.querySelectorAll("#takeAttendenceTable tr");
- 
   var currentRow = 0;
-
   var attendenceObject = {};
 
   while (currentRow < dataRows.length) {
@@ -112,7 +99,6 @@ function submitAttendence() {
     currentRow += 1;
   }
 
-
   let myToast = new bootstrap.Toast(document.getElementById('liveToast'));
   let liveToast = document.getElementById("liveToast");
 
@@ -125,41 +111,28 @@ function submitAttendence() {
   })
     .then(response => response.text())
     .then(data => {
-
       if (data === "success") {
         liveToast.style.backgroundColor = "#BBF7D0";
         liveToast.style.color = 'green';
-        document.getElementById('toast-alert-message').innerHTML = "Attendence Uploaded Successfully...";
+        document.getElementById('toast-alert-message').innerHTML = "Attendance Uploaded Successfully...";
         myToast.show();
 
-
+        // Refresh the student list to update percentages
+        showStudentsForAttendence();
       } else {
         liveToast.style.backgroundColor = "#FECDD3";
         liveToast.style.color = 'red';
         document.getElementById('toast-alert-message').innerHTML = "Error - " + data;
         myToast.show();
       }
-      showStudentsForAttendence();
 
       var div1 = document.querySelector(".attendenceTableContainer");
       disbableButtons(div1, false);
-
-      var div = document.getElementById("bottom-btns");
-      var buttons = div.getElementsByTagName('button');
-      for (var i = 0; i < buttons.length; i++) {
-        buttons[i].disabled = true;
-      }
-
     })
     .catch(error => {
       console.error('Error:', error);
     });
-
-
-
-
 }
-
 
 function disbableButtons(div, bool) {
 
@@ -218,32 +191,32 @@ function resetAttendence() {
 
 
 document.getElementById('find-attendence-btn').addEventListener("click", findAttendenceBtnClicked);
-document.getElementById('dateInput').addEventListener("change", function(){
+document.getElementById('dateInput').addEventListener("change", function () {
   var dateIsHere = document.getElementById("dateInput").value;
-  if(dateIsHere === ""){
+  if (dateIsHere === "") {
     document.querySelector("#edit-invalid-file").style.display = "block";
-  }else{
+  } else {
     document.querySelector("#edit-invalid-file").style.display = "none";
   }
 });
 
-function findAttendenceBtnClicked(){
+function findAttendenceBtnClicked() {
   var dateIsHere = document.getElementById("dateInput").value;
-  if(dateIsHere === ""){
+  if (dateIsHere === "") {
     document.querySelector("#edit-invalid-file").style.display = "block";
-  }else{
+  } else {
     document.querySelector("#edit-invalid-file").style.display = "none";
     showAttendenceOnDate();
   }
 
 }
 
-function showAttendenceOnDate(){
+function showAttendenceOnDate() {
 
-  var _class = document.getElementById("showAttendenceClass").value; 
-  var _section = document.getElementById("showAttendenceSection").value; 
-  var _date = document.getElementById("dateInput").value; 
- 
+  var _class = document.getElementById("showAttendenceClass").value;
+  var _section = document.getElementById("showAttendenceSection").value;
+  var _date = document.getElementById("dateInput").value;
+
 
   var myobj = {
     limit: limit,
@@ -254,7 +227,7 @@ function showAttendenceOnDate(){
   }
 
   document.getElementById("pageCount").innerHTML = pageCount;
-  
+
   if ((beginPoint + limit) >= totalNotices) {
     // diable next btn
     document.getElementById("nextBtn").disabled = true;
@@ -273,7 +246,7 @@ function showAttendenceOnDate(){
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-   },
+    },
     body: JSON.stringify(myobj),
   })
     .then(response => response.json())
@@ -328,14 +301,16 @@ document.getElementById("nextBtn").addEventListener('click', function () {
   }
 });
 
-document.querySelector(".showAttendenceBtn").addEventListener("click", function(){
+document.querySelector(".showAttendenceBtn").addEventListener("click", function () {
 
 
   var date = new Date();
-  var dateFormated = date.toISOString().substring(0,10);
+  var dateFormated = date.toISOString().substring(0, 10);
 
   document.getElementById("dateInput").value = dateFormated;
   showAttendenceOnDate();
 });
+
+
 
 // ----------------------- end show  attendence-----------------------------

@@ -32,43 +32,36 @@ function showStudentsForAttendence() {
   })
     .then(response => response.json())
     .then(data => {
+      const tableBody = document.getElementById("takeAttendenceTable");
+      tableBody.innerHTML = "";
 
-     
-      if (data[0] === "READY_TO_TAKE") {
-        if (data[1] === "No Data") {
-          document.querySelector("#dropDownListForSubmit").disabled = true;
-
-          document.getElementById("takeAttendenceTable").innerHTML = "";
-          document.getElementById("no-data-icon").innerHTML = " <i class='bx bx-data'></i>";
-          document.getElementById("no-data-msg").innerHTML = data[1];
-          document.getElementById("dataNotAvailable").style.display = 'block';
-        } else {
-          document.querySelector("#dropDownListForSubmit").disabled = false;
-
-          document.getElementById("dataNotAvailable").style.display = 'none';
-          document.getElementById("takeAttendenceTable").innerHTML = data[1] + "";
-
-          var div = document.getElementById("bottom-btns");
-          var buttons = div.getElementsByTagName('button');
-          for (var i = 0; i < buttons.length; i++) {
-            buttons[i].disabled = false;
-          }
-        }
-      } else {
-        
-        document.querySelector("#dropDownListForSubmit").disabled = true;
-        document.getElementById("takeAttendenceTable").innerHTML = "";
-        document.getElementById("no-data-icon").innerHTML = "<i class='bx bxs-error-alt' ></i>";
-        document.getElementById("no-data-msg").innerHTML = data[1];
+      if (data.status === "no_data") {
+        document.getElementById("no-data-icon").innerHTML = "<i class='bx bx-data'></i>";
+        document.getElementById("no-data-msg").innerHTML = data.message;
         document.getElementById("dataNotAvailable").style.display = 'block';
-
+        document.querySelector("#dropDownListForSubmit").disabled = true;
+        return;
       }
 
+      if (data.status === "success") {
+        document.getElementById("dataNotAvailable").style.display = 'none';
+        document.getElementById("takeAttendenceTable").innerHTML = data.html;
 
+        // Show "Already Taken" banner if needed
+        if (data.already_taken) {
+          // You can add a nice banner here if you want
+          console.log("Attendance already taken today - checkboxes disabled");
+        }
+
+        document.querySelector("#dropDownListForSubmit").disabled = false;
+
+        // Enable bottom buttons
+        var btns = document.getElementById("bottom-btns").getElementsByTagName('button');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].disabled = false;
+        }
+      }
     })
-    .catch(error => {
-      console.error('Error:', error);
-    });
 }
 
 document.querySelector(".submit-attendence").addEventListener("click", submitAttendence);
@@ -82,7 +75,7 @@ function submitAttendence() {
 
 
   var dataRows = document.querySelectorAll("#takeAttendenceTable tr");
- 
+
   var currentRow = 0;
 
   var attendenceObject = {};
@@ -209,32 +202,32 @@ function resetAttendence() {
 
 
 document.getElementById('find-attendence-btn').addEventListener("click", findAttendenceBtnClicked);
-document.getElementById('dateInput').addEventListener("change", function(){
+document.getElementById('dateInput').addEventListener("change", function () {
   var dateIsHere = document.getElementById("dateInput").value;
-  if(dateIsHere === ""){
+  if (dateIsHere === "") {
     document.querySelector("#edit-invalid-file").style.display = "block";
-  }else{
+  } else {
     document.querySelector("#edit-invalid-file").style.display = "none";
   }
 });
 
-function findAttendenceBtnClicked(){
+function findAttendenceBtnClicked() {
   var dateIsHere = document.getElementById("dateInput").value;
-  if(dateIsHere === ""){
+  if (dateIsHere === "") {
     document.querySelector("#edit-invalid-file").style.display = "block";
-  }else{
+  } else {
     document.querySelector("#edit-invalid-file").style.display = "none";
     showAttendenceOnDate();
   }
 
 }
 
-function showAttendenceOnDate(){
+function showAttendenceOnDate() {
 
-  var _class = document.getElementById("showAttendenceClass").value; 
-  var _section = document.getElementById("showAttendenceSection").value; 
-  var _date = document.getElementById("dateInput").value; 
- 
+  var _class = document.getElementById("showAttendenceClass").value;
+  var _section = document.getElementById("showAttendenceSection").value;
+  var _date = document.getElementById("dateInput").value;
+
 
   var myobj = {
     limit: limit,
@@ -245,7 +238,7 @@ function showAttendenceOnDate(){
   }
 
   document.getElementById("pageCount").innerHTML = pageCount;
-  
+
   if ((beginPoint + limit) >= totalNotices) {
     // diable next btn
     document.getElementById("nextBtn").disabled = true;
@@ -264,7 +257,7 @@ function showAttendenceOnDate(){
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-   },
+    },
     body: JSON.stringify(myobj),
   })
     .then(response => response.json())
@@ -319,11 +312,11 @@ document.getElementById("nextBtn").addEventListener('click', function () {
   }
 });
 
-document.querySelector(".showAttendenceBtn").addEventListener("click", function(){
+document.querySelector(".showAttendenceBtn").addEventListener("click", function () {
 
 
   var date = new Date();
-  var dateFormated = date.toISOString().substring(0,10);
+  var dateFormated = date.toISOString().substring(0, 10);
 
   document.getElementById("dateInput").value = dateFormated;
   showAttendenceOnDate();

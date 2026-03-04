@@ -1,138 +1,121 @@
 <?php
 include("config.php");
-session_start();
-error_reporting(1);
+header('Content-Type: application/json');
 
-$response = array();
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
-
-    $jsonData = file_get_contents('php://input');
-    $decodedData = json_decode($jsonData, true);
-
-    $class = $decodedData['class'];
-    $section = $decodedData['section'];
-
-    $currentDay = date('d') . "";
-    $currentMonth = date('m') . "";
-    $currentYear = date('Y') . "";
-
-    $query = "SELECT * FROM `attendence` WHERE (`class`=? AND `section`=?) AND (Day(`date`)=? AND Month(`date`)=? AND Year(`date`)=?)";
-
-    $stmt = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($stmt, "sssss", $class, $section, $currentDay, $currentMonth, $currentYear);
-
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-
-    if (mysqli_num_rows($result) > 0) {
-        $response[0] = "ALREADY_TAKEN";
-        $response[1] = "Already Taken";
-    } else {
-        $response[0] = "READY_TO_TAKE";
-
-        $query = "SELECT * FROM `students` WHERE `class`=? AND `section`=? ORDER BY `fname` ASC, `lname` ASC;";
-
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "ss", $class, $section);
-
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-
-        if (mysqli_num_rows($result) > 0) {
-            $count = 1;
-
-            $response[1] = "";
-            while ($row = mysqli_fetch_assoc($result)) {
-
-                $pathToFile = ".." . DIRECTORY_SEPARATOR . "studentUploads" . DIRECTORY_SEPARATOR . $row['image'];
-
-                if (!file_exists($pathToFile)) {
-                    $pathToFile = "../images/user.png";
-                }
-
-
-            $currentYear = date("Y");
-            $currentMonth = date('m');
-
-            $startDate = "";
-            $endDate = "";
-            if($currentMonth <= 3){
-                $startDate = ($currentYear - 1) . "-04-01";
-                $endDate = $currentYear . "-03-31";
-            }else{
-                $startDate = $currentYear . "-04-01";
-                $endDate = ($currentYear + 1) . "-03-31";
-            }
-
-                
-                $presentquery = "SELECT COUNT(*) 
-                                 FROM `attendence` 
-                                 WHERE `student_id` = ? 
-                                 AND `attendence` = ? 
-                                 AND `date` BETWEEN ? AND ?";
-                $stmt2 = mysqli_prepare($conn, $presentquery);
-                $temp = "1";
-                mysqli_stmt_bind_param($stmt2, "ssss", $row['id'], $temp, $startDate, $endDate);
-                mysqli_stmt_execute($stmt2);
-                mysqli_stmt_bind_result($stmt2, $presentCount);
-                mysqli_stmt_fetch($stmt2);
-                mysqli_stmt_close($stmt2);
-                
-                $workingDaysQuery = "SELECT COUNT(DISTINCT DATE_FORMAT(`date`, '%Y-%m-%d')) 
-                                     FROM `attendence`
-                                     WHERE `date` BETWEEN ? AND ?";
-                $stmt3 = mysqli_prepare($conn, $workingDaysQuery);
-                mysqli_stmt_bind_param($stmt3, "ss", $startDate, $endDate);
-                mysqli_stmt_execute($stmt3);
-                mysqli_stmt_bind_result($stmt3, $workingDays);
-                mysqli_stmt_fetch($stmt3);
-                mysqli_stmt_close($stmt3);
-
-
-                $present = (int) $presentCount;
-                $percent = 0;
-                if ($workingDays != 0) {
-                    $percent = (int) (($present / $workingDays) * 100);
-                }
-                // $percent = (int)(($presentCount/$total)*100);
-
-
-                $response[1] .= '<tr>
-                                    <td>' . $count . '.&nbsp;&nbsp;</td>
-                                    <td class="student_id">' . $row['id'] . '</td>
-                                    <td class="user">
-                                        <img src="' . $pathToFile . '">
-                                        <p>' . ucfirst(strtolower($row['fname'])) . " " . strtolower($row['lname']) . '</p>
-                                    </td>
-                                    <td class="text-center"> ' . $workingDays . '</td>
-                                <td class="text-center"> ' . $present . '</td>
-                                '.$attendence_str.'
-                                    <td>
-                                        <label class="switch">
-                                            <input type="checkbox" class="attendenceCheckbox">
-                                            <span class="slider round"></span>
-                                        </label>
-                                    </td>
-                                </tr>';
-                $count++;
-
-
-            }
-        } else {
-            $response[1] = "No Data";
-        }
-
-
-    }
-
-
-
-
-
-
-} else {
-    $response[0] = "Something went wrong!";
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    echo json_encode(["status" => "error", "message" => "Invalid request"]);
+    exit;
 }
-echo json_encode($response);
 
+$data = json_decode(file_get_contents('php://input'), true);
+$class   = trim($data['class'] ?? '');
+$section = strtoupper(trim($data['section'] ?? ''));
+
+if (empty($class) || empty($section)) {
+    echo json_encode(["status" => "error", "message" => "Class and section required"]);
+    exit;
+}
+
+// 1. Get today's attendance (to pre-check toggles)
+$today = date('Y-m-d');
+$todayQuery = "SELECT student_id, attendence 
+               FROM attendence 
+               WHERE class = ? AND section = ? AND DATE(date) = ?";
+$stmt = mysqli_prepare($conn, $todayQuery);
+mysqli_stmt_bind_param($stmt, "sss", $class, $section, $today);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+$todayAttendance = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $todayAttendance[$row['student_id']] = (int)$row['attendence'];
+}
+mysqli_stmt_close($stmt);
+
+// 2. Academic session dates
+$year = date("Y");
+$month = date('m');
+$startDate = ($month <= 3) ? ($year - 1) . "-04-01" : $year . "-04-01";
+$endDate   = ($month <= 3) ? $year . "-03-31" : ($year + 1) . "-03-31";
+
+// 3. Working days count
+$wdQuery = "SELECT COUNT(DISTINCT DATE(date)) 
+            FROM attendence 
+            WHERE class = ? AND section = ? 
+              AND date BETWEEN ? AND ?";
+$stmt = mysqli_prepare($conn, $wdQuery);
+mysqli_stmt_bind_param($stmt, "ssss", $class, $section, $startDate, $endDate);
+mysqli_stmt_execute($stmt);
+mysqli_stmt_bind_result($stmt, $workingDays);
+mysqli_stmt_fetch($stmt);
+mysqli_stmt_close($stmt);
+$workingDays = max((int)$workingDays, 1);
+
+// 4. Students
+$stuQuery = "SELECT id, fname, lname, image 
+             FROM students 
+             WHERE class = ? AND section = ? 
+             ORDER BY fname ASC, lname ASC";
+$stmt = mysqli_prepare($conn, $stuQuery);
+mysqli_stmt_bind_param($stmt, "ss", $class, $section);
+mysqli_stmt_execute($stmt);
+$result = mysqli_stmt_get_result($stmt);
+
+if (mysqli_num_rows($result) === 0) {
+    echo json_encode(["status" => "no_data", "message" => "No students found"]);
+    exit;
+}
+
+$count = 1;
+$html = "";
+
+while ($row = mysqli_fetch_assoc($result)) {
+    $sid = $row['id'];
+    $name = ucfirst(strtolower($row['fname'])) . " " . ucfirst(strtolower($row['lname']));
+    $imgPath = "../studentUploads/" . $row['image'];
+    $imgSrc = file_exists($imgPath) ? $imgPath : "../images/user.png";
+
+    // Present count
+    $presentQuery = "SELECT COUNT(*) FROM attendence 
+                     WHERE student_id = ? AND attendence = 1 
+                       AND date BETWEEN ? AND ?";
+    $stmtP = mysqli_prepare($conn, $presentQuery);
+    mysqli_stmt_bind_param($stmtP, "sss", $sid, $startDate, $endDate);
+    mysqli_stmt_execute($stmtP);
+    mysqli_stmt_bind_result($stmtP, $presentCount);
+    mysqli_stmt_fetch($stmtP);
+    mysqli_stmt_close($stmtP);
+
+    $percent = round(($presentCount / $workingDays) * 100, 1);
+
+    // Pre-check toggle
+    $checked = (isset($todayAttendance[$sid]) && $todayAttendance[$sid] === 1) ? 'checked' : '';
+
+    $html .= '
+        <tr>
+            <td>' . $count . '.</td>
+            <td class="student_id">' . htmlspecialchars($sid) . '</td>
+            <td class="user">
+                <img src="' . htmlspecialchars($imgSrc) . '" style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                <p>' . htmlspecialchars($name) . '</p>
+            </td>
+            <td class="text-center">' . $workingDays . '</td>
+            <td class="text-center">' . $presentCount . '</td>
+            <td class="text-center">' . $percent . '%</td>
+            <td class="text-center">
+                <label class="switch">
+                    <input type="checkbox" class="attendenceCheckbox" ' . $checked . '>
+                    <span class="slider round"></span>
+                </label>
+            </td>
+        </tr>';
+    $count++;
+}
+
+echo json_encode([
+    "status" => "success",
+    "html"   => $html
+]);
+
+mysqli_close($conn);
 ?>
