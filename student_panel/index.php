@@ -16,6 +16,7 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- <link rel="stylesheet" href="../css/oranbyte-google-translator.css"> -->
     <link rel="stylesheet" href="custom-student.css">
+    <link rel="stylesheet" href="custom-student-enhanced.css">
 
    
 </head>
@@ -312,7 +313,7 @@
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Attandence', 'percentage'],
-                ['preset', presentPer],
+                ['present', presentPer],
                 ['Absent', absentPer],
             ]);
 
