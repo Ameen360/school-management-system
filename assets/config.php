@@ -1,16 +1,19 @@
 <?php
-    $server = "localhost";
-   
-    $user = "root";
-    $password = "";
-    $db = "erp_sms";
-    
-    $conn = mysqli_connect($server, $user, $password, $db);
+    $server   = getenv('DB_HOST');
+    $port     = (int) getenv('DB_PORT');
+    $user     = getenv('DB_USER');
+    $password = getenv('DB_PASS');
+    $db       = getenv('DB_NAME');
+
+    $conn = mysqli_init();
+
+    // Aiven requires SSL
+    mysqli_ssl_set($conn, NULL, NULL, '/etc/ssl/certs/ca-certificates.crt', NULL, NULL);
+
+    $conn = mysqli_connect($server, $user, $password, $db, $port);
 
     if (!$conn) {
         header('Location: ../errors/error.html');
         exit();
     }
-
-
 ?>
