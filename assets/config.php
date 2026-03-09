@@ -1,5 +1,4 @@
 <?php
-ob_start();
     $server   = getenv('DB_HOST');
     $port     = (int) getenv('DB_PORT');
     $user     = getenv('DB_USER');
